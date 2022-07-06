@@ -5,23 +5,40 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:background="#fff"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="NotesApp"
+            app:subtitle="Edit your note"/>
+
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/field_layout"
+            android:gravity="top|left"
+            android:hint="Enter note here"
+            android:layout_gravity="left|top"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/save_btn">
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@id/remove_btn">
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/field"
+                android:gravity="top|left"
+                android:layout_gravity="left|top"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
    <com.google.android.material.button.MaterialButton
-           android:id="@+id/save_btn"
+           android:id="@+id/remove_btn"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:text="Save"
+           android:text="Remove"
            app:layout_constraintTop_toBottomOf="@id/field_layout"
            app:layout_constraintBottom_toBottomOf="parent"/>
 

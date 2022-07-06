@@ -8,15 +8,13 @@ import kotleni.notesapp.App
 import kotleni.notesapp.database.AppDatabase
 import kotleni.notesapp.database.NoteEntity
 import kotleni.notesapp.storage.DatabaseStorage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.coroutines.coroutineContext
 
 class MainViewModel: ViewModel() {
     // coroutine
     private val io = CoroutineScope(Dispatchers.IO)
+    private val main = CoroutineScope(Dispatchers.Main)
 
     private val databaseStorage: DatabaseStorage = DatabaseStorage()
     private var notesList: MutableLiveData<List<NoteEntity>> = MutableLiveData()
@@ -25,8 +23,11 @@ class MainViewModel: ViewModel() {
         return notesList
     }
 
-    fun loadNotes() = io.launch {
-        notesList.value = databaseStorage.getAllNotes()
+    fun loadNotes() = main.launch {
+        val notes = withContext(Dispatchers.IO) {
+           databaseStorage.getAllNotes()
+        }
+        notesList.value = notes
     }
 
     fun newNote() = io.launch {
@@ -36,9 +37,11 @@ class MainViewModel: ViewModel() {
                 text = ""
             )
         )
+        loadNotes()
     }
 
     fun removeNote(noteEntity: NoteEntity) = io.launch {
         databaseStorage.removeNote(noteEntity)
+        loadNotes()
     }
 }

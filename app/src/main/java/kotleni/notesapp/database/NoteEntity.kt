@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 @Entity
 data class NoteEntity (
     @PrimaryKey val uid: Int,
-    @ColumnInfo(name = "text") val text: String?
+    @ColumnInfo(name = "text") var text: String?
 )

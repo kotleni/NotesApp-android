@@ -1,5 +1,6 @@
 package kotleni.notesapp.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,10 @@ class NotesListAdapter(val itemClickHandler: (note: NoteEntity) -> Unit): Recycl
     }
 
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
-        holder.binding.text.text = list[position].text
+        // fixme: stupid code
+        holder.binding.text.text = if(list[position].text!!.isEmpty()) "It's note is empty..." else list[position].text
+        if(list[position].text!!.isEmpty()) holder.binding.text.setTextColor(Color.parseColor("#4C4C4C"))
+
         holder.binding.root.setOnClickListener {
             itemClickHandler.invoke(list[position])
         }

@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.core.os.bundleOf
+import androidx.fragment.app.*
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotleni.notesapp.R
 import kotleni.notesapp.adapter.NotesListAdapter
 import kotleni.notesapp.databinding.FragmentMainBinding
 import kotleni.notesapp.viewmodel.MainViewModel
@@ -23,10 +25,23 @@ class MainFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // setSupportActionBar(binding.toolbar)
 
-        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.recycler.layoutManager = GridLayoutManager(requireContext(), 2) //LinearLayoutManager(requireContext())
         binding.recycler.adapter = NotesListAdapter() {
-            // when clicked
+            requireActivity().supportFragmentManager.commit {
+                setCustomAnimations(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                )
+                setReorderingAllowed(true)
+                val fragment = NoteFragment()
+                fragment.arguments = Bundle().apply {
+                    putInt("uid", it.uid)
+                }
+                replace(R.id.container,fragment)
+            }
         }
+
+        viewModel.loadNotes()
 
         viewModel.getNotesList().observe(this) {
             (binding.recycler.adapter as NotesListAdapter).updateList(it)

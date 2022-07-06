@@ -20,6 +20,18 @@ class DatabaseStorage {
         return dao.getAll()
     }
 
+    fun getNoteByUid(uid: Int): NoteEntity? {
+        val dao = db.notesDao()
+        val all = dao.getAll()
+
+        all.forEach {
+            if(it.uid == uid)
+                return it
+        }
+
+        return null
+    }
+
     fun addNote(noteEntity: NoteEntity) {
         val dao = db.notesDao()
         dao.insertAll(noteEntity)
